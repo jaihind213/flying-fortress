@@ -19,3 +19,16 @@ currently available with the kafka client library.
 
 The Flying Fortress C-108 , transports multiple messages in one go to simulate transaction
 capability for message publishing.
+
+How does it Work?
+-----------------
+todo.
+
+Status:
+-------
+work in progress. 
+first version of publisher done. subscriber in progress.
+
+Ready to Fly the Fortress? give it a spin
+----------------------------------------
+todo.
