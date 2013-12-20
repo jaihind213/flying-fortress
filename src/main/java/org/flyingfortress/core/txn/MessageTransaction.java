@@ -104,46 +104,5 @@ public class MessageTransaction {
         String body = JsonHelper.objectMapper.writeValueAsString(buffer);
         return new Message(txnIdThreadLocal.get(),body);
     }
-
-    public static void main(String[] args) throws IOException {
-        String config = "{\n" +
-                "    \"type\": \"kafka\",\n" +
-                "    \"level\": \"serializable\",\n" +
-                "    \"properties\": {},\n" +
-                "    \"kafkaProducerConfig\": {}\n" +
-                "}";
-        TransactionConfiguration configuration = JsonHelper.objectMapper.readValue(config,TransactionConfiguration.class);
-        TransactionManager.init(configuration);
-        new MyThread().start();
-        // new MyThread("rollback").start();
-    }
-
-
-
-   static class MyThread extends Thread{
-       private Message message;
-
-        MyThread() {
-            super("some");
-        }
-
-        @Override
-        public void run() {
-            try {
-                MessageTransaction.start();
-                Thread.sleep(2000);
-                System.out.println("out of sleeep.... Threadid:" + Thread.currentThread().getId());
-                Destination destination1 = new Destination("XXXX");
-                Destination destination2 = new Destination("ZZZZ");
-                MessagePublisher.addMessage(new Message("msg10"),destination1);
-                MessagePublisher.addMessage(new Message("msg20"),destination2);
-                MessagePublisher.addMessage(new Message("mssg11"),destination1);
-                MessageTransaction.commit();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
 

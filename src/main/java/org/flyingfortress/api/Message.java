@@ -74,12 +74,4 @@ public class Message <M> {
         return body;
     }
 
-    public static void main(String[] args) throws IOException {
-        ObjectMapper objectMapper  = new ObjectMapper();
-        Message m = new Message("1","body");
-        String json = objectMapper.writeValueAsString(m);
-        System.out.println(json);
-        Message m2 = objectMapper.readValue(json,Message.class);
-        int a =1;
-    }
 }

@@ -61,15 +61,4 @@ public class MessageDataBuffer implements BufferOperations{
     public Set<Destination>  getDestinations(){
         return data.keySet();
     }
-
-    public static void main(String[] args) throws IOException {
-
-        MessageDataBuffer m = new MessageDataBuffer();
-        String json = "{\"data\":{\"{DestinationName:dst,DestinationType:queue}\":[{\"body\":\"crap\",\"headers\":{},\"msgId\":\"msgId1387433097430\",\"receivedTime\":1387433097430}]}}\n";
-        m.addMessage(new Message("crap"),new Destination("dst"));
-        System.out.println(new ObjectMapper().writeValueAsString(m));
-        m = new ObjectMapper().readValue(json,MessageDataBuffer.class);
-        int a =0;
-    }
-
 }
