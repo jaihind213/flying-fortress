@@ -23,7 +23,7 @@ public class Destination {
 
     private String name;
 
-    private DESTINATION_TYPE type = DESTINATION_TYPE.queue;
+    private DESTINATION_TYPE type = DESTINATION_TYPE.topic;
 
     @JsonCreator
     public Destination(@JsonProperty("name") String name,@JsonProperty("type") DESTINATION_TYPE type) {
@@ -64,7 +64,6 @@ public class Destination {
     }
 
     @Override
-
     public boolean equals(Object o) {
         boolean result = true;
         if(o == null || !(o instanceof Destination) ){

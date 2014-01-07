@@ -10,7 +10,7 @@ public class TransactionState {
     public enum STATE{
         not_started, in_progress, complete
     }
-    public static final ThreadLocal txnState = new ThreadLocal();
+    private static final ThreadLocal txnState = new ThreadLocal();
 
     public static void set(STATE state) {
         txnState.set(state);

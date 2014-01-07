@@ -1,0 +1,1 @@
+{"data":{"{DestinationName:d2,DestinationType:topic}":[{"msgId":"m2","body":"m2","headers":{},"receivedTime":124}],"{DestinationName:d1,DestinationType:queue}":[{"msgId":"m1","body":"m1","headers":{},"receivedTime":123},{"msgId":"m2","body":"m2","headers":{},"receivedTime":124}]}}

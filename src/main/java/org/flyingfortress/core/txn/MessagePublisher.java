@@ -19,7 +19,12 @@ public class MessagePublisher {
 
     private static final ThreadLocal <MessageDataBuffer> bufferThreadLocal = new ThreadLocal <MessageDataBuffer> ();
 
-    static void addMessage(Message message,Destination destination) {
+    public static void addMessage(Message message,Destination destination) {
+        TransactionState.STATE currentState = TransactionState.get();
+
+        if(!currentState.equals(TransactionState.STATE.in_progress)){
+            throw new IllegalStateException("Cant add message to transaction whose state is not in progress. currentState:"+currentState.toString());
+        }
         if(message == null || destination ==null){
             throw new IllegalArgumentException("Message/Destination cant be null for publish call!");
         }
@@ -48,7 +53,6 @@ public class MessagePublisher {
     static void checkAndCreate(){
         MessageDataBuffer dataBuffer= bufferThreadLocal.get();
         if(dataBuffer== null){
-            List<Message> messages = new ArrayList<Message>();
             dataBuffer = new MessageDataBuffer();
             bufferThreadLocal.set(dataBuffer);
         }

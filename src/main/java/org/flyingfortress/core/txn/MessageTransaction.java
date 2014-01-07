@@ -2,8 +2,6 @@ package org.flyingfortress.core.txn;
 
 import org.flyingfortress.api.Destination;
 import org.flyingfortress.api.Message;
-import org.flyingfortress.core.TransactionManager;
-import org.flyingfortress.core.config.TransactionConfiguration;
 import org.flyingfortress.core.emit.Emitor;
 import org.flyingfortress.core.txn.buffer.MessageDataBuffer;
 import org.flyingfortress.exception.txn.CommitException;
@@ -25,6 +23,14 @@ import java.util.*;
 public class MessageTransaction {
     private static final Logger logger = LoggerFactory.getLogger(MessageTransaction.class);
     public static final ThreadLocal <String> txnIdThreadLocal = new ThreadLocal<String>();
+
+    public static TransactionState.STATE  getState(){
+        return TransactionState.get();
+    }
+
+    public static String  getId(){
+        return txnIdThreadLocal.get();
+    }
 
     /**
      * Start a transaction
@@ -49,6 +55,10 @@ public class MessageTransaction {
      */
     public static void rollback()throws RollbackException {
         //do your stuff...reset
+        TransactionState.STATE currentState = TransactionState.get();
+        if(!currentState.equals(TransactionState.STATE.in_progress)){
+            throw new IllegalStateException("Cant rollback a transaction whose state is:"+currentState.toString());
+        }
         String txnId =  txnIdThreadLocal.get();
         logger.info("Transaction rolling back for txnId:" + txnId);
         resetState();
@@ -72,8 +82,9 @@ public class MessageTransaction {
                 for(Destination d: buffer.getDestinations()) {
                     destinations.add(d);
                 }
-                emitor.emit(bulkMessage,TransactionManager.getInstance().decideDestination(destinations));
+                emitor.emit(bulkMessage,TransactionManager.getInstance().prepareDestinationGroupName(destinations));
             }
+            TransactionState.set(TransactionState.STATE.complete);
             logger.info("Transaction commit success! txnId:" + txnId);
         } catch (Exception e) {
             logger.error("Failed to commit txn:"+ txnId,e);
@@ -104,5 +115,6 @@ public class MessageTransaction {
         String body = JsonHelper.objectMapper.writeValueAsString(buffer);
         return new Message(txnIdThreadLocal.get(),body);
     }
+
 }
 

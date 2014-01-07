@@ -7,5 +7,8 @@ package org.flyingfortress.api;
  * Time: 5:05 PM
  */
 public enum TRANSACTION_LEVEL {
-    serializable,parallel
+    /** kafka transactions to take place in serial order*/
+    serializable,
+    /** kafka transactions to take place in parallel*/
+    parallel
 }

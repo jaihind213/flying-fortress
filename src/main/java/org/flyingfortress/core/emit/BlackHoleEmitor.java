@@ -13,6 +13,9 @@ import org.flyingfortress.exception.LifeCycleException;
  */
 public class BlackHoleEmitor extends BaseEmitor{
 
+    public BlackHoleEmitor() {
+        this.initialized=true;
+    }
 
     @Override
     /**

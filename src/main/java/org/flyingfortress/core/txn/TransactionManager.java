@@ -1,6 +1,7 @@
-package org.flyingfortress.core;
+package org.flyingfortress.core.txn;
 
 import org.flyingfortress.api.Destination;
+import org.flyingfortress.core.Constants;
 import org.flyingfortress.core.config.TransactionConfiguration;
 import org.flyingfortress.core.emit.BlackHoleEmitor;
 import org.flyingfortress.core.emit.Emitor;
@@ -39,11 +40,12 @@ public class TransactionManager{
     private TransactionManager(TransactionConfiguration configuration) {
         this.configuration=configuration;
     }
-    public Emitor getEmitor() throws EmitorInstantiationException {
+
+    Emitor getEmitor() throws EmitorInstantiationException {
         return transactionManager.createEmitor();
     }
 
-    public Destination decideDestination(Set<Destination> destinations){
+    Destination prepareDestinationGroupName(Set<Destination> destinations){
         String [] destNameArray = new String[destinations.size()];
         Iterator<Destination> iterator  = destinations.iterator();
 
@@ -53,17 +55,28 @@ public class TransactionManager{
         }
 
         RaddixSort.radixSort(destNameArray,transactionManager.configuration.getTopicNameMaxLength());
-        Destination destinationForTxn = new Destination(prepareDestinationName(destNameArray));
+        Destination destinationForTxn = new Destination(Constants.FLYING_FORTRESS_TOPIC_PREFIX +prepareDestinationName(destNameArray));
         return destinationForTxn;
     }
 
     private String prepareDestinationName(String []destArray){
            StringBuffer temp = new StringBuffer(destArray.length);
            for(int i = 0; i< destArray.length;i++){
-               temp.append(destArray[i]);
+               temp.append(destArray[i]+Constants.seperator);
            }
         return temp.toString();
     }
+
+    /**
+     * Is a destination part of a transaction topic group (logic depends on how prepareDestinationGroupName/prepareDestinationName)
+     * @param destinationName string
+     * @param groupName  string
+     * @return boolean - true if present else false
+     */
+    boolean isDestinationInGroup(String destinationName, String groupName){ //todo: have class have DestinationGroup ??? think about it.
+        return groupName.contains(destinationName);
+    }
+
     private Emitor createEmitor() throws EmitorInstantiationException {
         Emitor toReturn = null;
 

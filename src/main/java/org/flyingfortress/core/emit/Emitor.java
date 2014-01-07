@@ -11,7 +11,13 @@ import org.flyingfortress.exception.emit.EmitorException;
  * Time: 6:11 PM
  */
 public interface Emitor extends LifeCycle{
-
+    /**
+     *
+     * @param message
+     * @param destination
+     * @throws EmitorException if error occurs in emition.
+     * @throws IllegalStateException if emitor not initialized i.e. startup method was not called. refer  <code>LifeCycle interface<code/>
+     */
     public void emit(Message message, Destination destination)throws EmitorException;
 
 }

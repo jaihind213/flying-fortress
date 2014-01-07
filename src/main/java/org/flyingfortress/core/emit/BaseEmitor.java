@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class BaseEmitor implements Emitor{
     protected static final Logger logger = LoggerFactory.getLogger(BaseEmitor.class);
+    protected boolean initialized = false;
 
     public void startup() throws LifeCycleException {
         //do nothing
@@ -18,5 +19,9 @@ public abstract class BaseEmitor implements Emitor{
 
     public void shutdown() throws LifeCycleException {
         //do nothing
+    }
+
+    public boolean isInitialized(){
+        return initialized;
     }
 }

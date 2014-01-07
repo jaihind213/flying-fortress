@@ -1,5 +1,6 @@
 package org.flyingfortress.core.txn.buffer;
 
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -7,6 +8,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.flyingfortress.api.Destination;
 import org.flyingfortress.api.DestinationKeyDeserializer;
 import org.flyingfortress.api.Message;
+import org.flyingfortress.util.JsonHelper;
 
 import java.io.IOException;
 import java.util.*;
@@ -38,7 +40,7 @@ public class MessageDataBuffer implements BufferOperations{
             msgList = new ArrayList<Message>();
             data.put(destination,msgList);
         }
-        msgList.add(msg);
+        msgList.add(msg);   //todo:client can add same message twice! shud we add a check.?
     }
 
     /**
@@ -46,6 +48,7 @@ public class MessageDataBuffer implements BufferOperations{
      * @param destination
      * @return list of messages. empty list if nothing there.
      */
+    @JsonIgnore
     public List<Message> getMessagesForDestination(Destination destination) {
         List<Message> msgList = data.get(destination);
         if (msgList == null) {

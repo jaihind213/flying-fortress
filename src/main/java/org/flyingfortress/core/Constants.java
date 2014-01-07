@@ -7,7 +7,9 @@ package org.flyingfortress.core;
  */
 public class Constants {
 
-    public static final String kafkaEmitor="kafkaEmitor";
-    public static final String txnManager="txnManager";
     public static final String destination="destination";
+    public static final String seperator = "__";
+    public static final String FLYING_FORTRESS_TOPIC_PREFIX ="_FFC108_TXN_TOPIC_";
+
+
 }

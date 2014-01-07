@@ -12,14 +12,17 @@ import org.flyingfortress.api.TRANSACTION_LEVEL;
  */
 public class TransactionConfiguration  extends Configuration{
     @JsonProperty
-    private TRANSACTION_LEVEL level;
+    private TRANSACTION_LEVEL level  = TRANSACTION_LEVEL.serializable;
     @JsonProperty
-    private EMITOR_TYPE type;
+    private EMITOR_TYPE type = EMITOR_TYPE.kafka;
     @JsonProperty
     private int topicNameMaxLength = 32;
 
     @JsonProperty
     private KafkaProducerConfig kafkaProducerConfig;
+
+    @JsonProperty
+    private KafkaConsumerConfig kafkaConsumerConfig;
 
     public TransactionConfiguration() {
         this.name = "txnMgr";
@@ -55,5 +58,13 @@ public class TransactionConfiguration  extends Configuration{
 
     public void setKafkaProducerConfig(KafkaProducerConfig kafkaProducerConfig) {
         this.kafkaProducerConfig = kafkaProducerConfig;
+    }
+
+    public KafkaConsumerConfig getKafkaConsumerConfig() {
+        return kafkaConsumerConfig;
+    }
+
+    public void setKafkaConsumerConfig(KafkaConsumerConfig kafkaConsumerConfig) {
+        this.kafkaConsumerConfig = kafkaConsumerConfig;
     }
 }

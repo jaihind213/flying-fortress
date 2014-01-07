@@ -10,7 +10,6 @@ import java.io.IOException;
  * User: vishnuhr
  * Date: 19/12/13
  * Time: 11:50 AM
- * To change this template use File | Settings | File Templates.
  */
 public class DestinationKeyDeserializer extends KeyDeserializer
 {
@@ -33,7 +32,6 @@ public class DestinationKeyDeserializer extends KeyDeserializer
     private Destination constructDestination(String key){
         String name = key.substring(key.indexOf(":")+1, key.indexOf(","));
         String type = key.substring(key.lastIndexOf(":")+1 , key.lastIndexOf("}"));
-        System.out.println(name+","+type);
         return new Destination(name, Destination.DESTINATION_TYPE.valueOf(type));
     }
 

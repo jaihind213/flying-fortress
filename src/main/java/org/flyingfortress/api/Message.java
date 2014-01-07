@@ -1,11 +1,8 @@
 package org.flyingfortress.api;
 
-import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.ObjectMapper;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,16 +37,16 @@ public class Message <M> {
         this.receivedTime= System.currentTimeMillis();
         this.headers = headers;
     }
-    //@JsonCreator
+
     public Message(  M body, Map <String,Object>headers) {
         this("msgId"+String.valueOf(System.currentTimeMillis()),body,headers);
     }
 
-    //@JsonCreator
+
     public Message( M body) {
         this("msgId"+String.valueOf(System.currentTimeMillis()),body,new HashMap<String, Object>());
     }
-    //@JsonCreator
+
     public Message(String msgId, M body) {
         this(msgId,body,new HashMap<String, Object>());
     }
@@ -73,5 +70,6 @@ public class Message <M> {
     public M getBody() {
         return body;
     }
+
 
 }

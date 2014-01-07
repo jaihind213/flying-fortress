@@ -1,0 +1,8 @@
+{
+  "msgId": "id",
+  "body": "body",
+  "receivedTime": 123,
+  "headers": {
+    "headerName": "headerValue"
+  }
+}

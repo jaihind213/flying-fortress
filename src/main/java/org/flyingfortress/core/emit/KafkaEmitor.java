@@ -28,7 +28,7 @@ public class KafkaEmitor extends BaseEmitor{
     private final String id;   //client id
     private KafkaProducerConfig kafkaConfig;
     private Producer<Integer,String> syncProducer;
-    private boolean initialized = false;
+
     public static final String pingMsg= "ping_msg";
 
     public KafkaEmitor(KafkaProducerConfig config, String id) {
@@ -43,6 +43,9 @@ public class KafkaEmitor extends BaseEmitor{
 
     @Override
     public void emit(Message message, Destination destination) throws EmitorException {
+        if(!initialized){
+            throw new IllegalStateException("Cant emit message as this emitor has not been initialized! startup not called!");
+        }
         try {
             logger.debug("KafkaEmitor Emiting msgBody:"+ JsonHelper.objectMapper.writeValueAsString(message)+", msgId:"+message.getMsgId());
         } catch (IOException warning) {
@@ -68,7 +71,7 @@ public class KafkaEmitor extends BaseEmitor{
         super.startup();
         try {
             this.syncProducer = new Producer<Integer, String>(new ProducerConfig(kafkaConfig.getProducerConfigProperties()));
-            KeyedMessage<Integer, String> data = new KeyedMessage<Integer, String>(kafkaConfig.getPingTopic(), new String("PingMsg: bombs away!: "+ new Date()));
+            KeyedMessage<Integer, String> data = new KeyedMessage<Integer, String>(kafkaConfig.getPingTopic(), new String(pingMsg+":bombs away!: "+ new Date()));
             syncProducer.send(data);
             logger.info("Initialized kafka emitor resources! Id:"+id);
             initialized=true;
@@ -81,10 +84,13 @@ public class KafkaEmitor extends BaseEmitor{
     public void shutdown() throws LifeCycleException {
         super.shutdown();
         try {
-            this.syncProducer.close();
+            if(initialized){
+                this.syncProducer.close();
+            }
         } catch (Exception e) {
             logger.warn("tried to shutdown kafka emitor resources! Id:"+id,e);
         }
+        syncProducer= null; //release reference.
         this.initialized=false;
         logger.info("Shutdown kafka emitor resources! Id:"+id);
     }
