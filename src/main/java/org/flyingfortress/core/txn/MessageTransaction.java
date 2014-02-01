@@ -20,7 +20,7 @@ import java.util.*;
  * Date: 15/12/13
  * Time: 6:38 AM
  */
-public class MessageTransaction {
+public class MessageTransaction{
     private static final Logger logger = LoggerFactory.getLogger(MessageTransaction.class);
     public static final ThreadLocal <String> txnIdThreadLocal = new ThreadLocal<String>();
 

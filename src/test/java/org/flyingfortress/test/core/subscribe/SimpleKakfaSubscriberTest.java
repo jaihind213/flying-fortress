@@ -45,6 +45,7 @@ public class SimpleKakfaSubscriberTest extends BaseTest implements Subscriber{
         loopProducer.start();
         simpleKafkaSubscriber.registerCallback(this);
         simpleKafkaSubscriber.startup();
+
     }
 
     @After
@@ -62,6 +63,7 @@ public class SimpleKakfaSubscriberTest extends BaseTest implements Subscriber{
     @Test(timeout = 1000)
     public void testSubscription() throws Exception {
         long start = System.currentTimeMillis();
+        kafkaEmitor.emit(new Message(testPayload), destination);
         msgWaitLatch.await();
         Assert.assertTrue(testMsgRecieved);
         System.out.println("Time taken for test:"+(System.currentTimeMillis()-start));
