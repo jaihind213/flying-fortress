@@ -59,7 +59,12 @@ MessageTransaction.commit();
 
 Status:
 -------
-first version ready.
+first version ready. tested with kafka-0.8.0-beta1
+
+Notes:
+(1)Execute the command `mvn clean compile package` which generates the jar in the target folder to use the library.
+
+(2)Test cases need kafka-0.8.0-beta1
 
 MainClasses:
 -------
@@ -72,3 +77,4 @@ todo:
 -----
 automate version change for pom.xml
 stress testing.
+publish to mvn repository
