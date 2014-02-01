@@ -22,13 +22,43 @@ capability for message publishing.
 
 How does it Work?
 -----------------
-todo.
+When a transaction is opened in a thread, a in-memory buffer is created.
+messages which need to be published as part of a transaction are added to the buffer.
+on commit, all the added messages are clubbed together into a SINGLE message and a publisher
+resource emits out this clubbed message. This operation is atomic.
+on rollback, the buffer is cleared out.
 
-Status:
--------
-work in progress. 
-first version of publisher done. subscriber in progress.
+Notes:
+Since, an internal buffer is used, this is intended for use when messages in txn have a small payload.
 
 Ready to Fly the Fortress? give it a spin
 ----------------------------------------
-todo.
+configuration = new TransactionConfiguration();
+configuration.setKafkaProducerConfig(new KafkaProducerConfig());
+configuration.setKafkaConsumerConfig(new KafkaConsumerConfig());
+TransactionManager.init(configuration);
+
+MessageTransaction.start();
+MessagePublisher.addMessage(new Message(payload), destination_1);
+MessagePublisher.addMessage(new Message(payload), destination_2);
+MessageTransaction.commit();
+
+//now create a MessageSubscriber to the interested destination
+//and register yourself as a callback.
+//Refer: to the test class 'KafkaTransactionTest'.
+
+Status:
+-------
+first version ready.
+
+MainClasses:
+-------
+TransactionConfiguration
+TransactionManager
+MessageSubscriber
+MessagePublisher
+
+todo:
+-----
+automate version change for pom.xml
+stress testing.

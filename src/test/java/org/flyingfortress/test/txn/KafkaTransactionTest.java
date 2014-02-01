@@ -88,12 +88,6 @@ public class KafkaTransactionTest extends BaseTest {
     }
 
 
-    @Test
-    public void testTransactionInvolvingManyDestinations() throws Exception {
-
-    }
-
-
     private class TestSubscriber implements Subscriber{
         private final String expectedPayload; //predefined expectedPayload its meant to receive for the tests!
         private final String id;
