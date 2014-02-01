@@ -48,10 +48,12 @@ public class MessageSubscriber extends BaseSubscriber {
        try
        {
             List<String> topics = getTransactionTopics();
-            for(String topic : topics)
+            for(int i =0 ; i < topics.size(); i++)
             {
+                String topic = topics.get(i);
                 Destination txnDestination = new Destination(topic);
-                SimpleKafkaSubscriber sks = new SimpleKafkaSubscriber( txnGroupPrefix+id, txnGroupPrefix+groupId, txnDestination,config );
+                String groupSubscriberId= i + txnGroupPrefix+id;
+                SimpleKafkaSubscriber sks = new SimpleKafkaSubscriber( groupSubscriberId, txnGroupPrefix+groupId, txnDestination,config );
                 sks.registerCallback(this);
                 txnTopicSubcribers.add(sks);
             }

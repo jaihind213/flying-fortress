@@ -27,7 +27,7 @@ public class SimpleKafkaSubscriber extends BaseSubscriber implements Runnable{
     private CountDownLatch startupLatch;
     private ConsumerConnector consumer;
     private String topic;
-    protected long sleepTime = 10; //in ms
+    protected long sleepTime = 5; //in ms  //this is probably bad.
 
     public SimpleKafkaSubscriber(String id, String groupID,Destination destination ,KafkaConsumerConfig config) {
         super(id, groupID, destination);

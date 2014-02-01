@@ -57,10 +57,11 @@ public class SimpleKakfaSubscriberTest extends BaseTest implements Subscriber{
         }
         try {
             simpleKafkaSubscriber.shutdown(); //this prints java.nio.channels.ClosedByInterruptException
-        } catch (LifeCycleException ignore) { }
+        } catch (LifeCycleException ignore) {
+        }
     }
 
-    @Test(timeout = 1000)
+    @Test(timeout = 5000) //hmmm. this timeout if reduced.. mite fail the test. timeout=1000 fails the test sometimes.
     public void testSubscription() throws Exception {
         long start = System.currentTimeMillis();
         kafkaEmitor.emit(new Message(testPayload), destination);
@@ -91,18 +92,20 @@ public class SimpleKakfaSubscriberTest extends BaseTest implements Subscriber{
             KafkaProducerConfig kafkaProducerConfig = new KafkaProducerConfig();
             kafkaEmitor = new KafkaEmitor(kafkaProducerConfig,"PublisherForSimpleKakfaSubscriberTest");
             kafkaEmitor.startup();
+            loop=true;
         }
 
-        volatile boolean loop = true;
+        volatile boolean loop = false;
         @Override
         public void run() {
             while(loop)
             {
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                 }
                 try {
+                    if(!kafkaEmitor.isInitialized())break;
                     kafkaEmitor.emit(new Message(testPayload), destination);
                 } catch (EmitorException e) {
                     e.printStackTrace();
