@@ -34,17 +34,27 @@ Since, an internal buffer is used, this is intended for use when messages in txn
 Ready to Fly the Fortress? give it a spin
 ----------------------------------------
 configuration = new TransactionConfiguration();
+
 configuration.setKafkaProducerConfig(new KafkaProducerConfig());
+
 configuration.setKafkaConsumerConfig(new KafkaConsumerConfig());
+
 TransactionManager.init(configuration);
 
+
+
 MessageTransaction.start();
+
 MessagePublisher.addMessage(new Message(payload), destination_1);
+
 MessagePublisher.addMessage(new Message(payload), destination_2);
+
 MessageTransaction.commit();
 
+
 //now create a MessageSubscriber to the interested destination
-//and register yourself as a callback.
+//& register yourself as a callback.
+
 //Refer: to the test class 'KafkaTransactionTest'.
 
 Status:
